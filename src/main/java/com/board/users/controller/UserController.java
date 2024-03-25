@@ -39,7 +39,7 @@ public class UserController {
 		
 		ModelAndView mv= new ModelAndView();
 		LocalDateTime today = LocalDateTime.now();
-		String now = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		String now = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSSS"));
 		DayOfWeek wkday = today.getDayOfWeek();
 		now += wkday;
 		mv.addObject("now", now);
