@@ -3,6 +3,7 @@ package com.board.users.controller;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.board.users.domain.UserVo;
 import com.board.users.mapper.UserMapper;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("/Users")
 public class UserController {
@@ -56,6 +59,50 @@ public class UserController {
 		return mv;
 	}
 	
+	// /Users/View
+	@RequestMapping("/View")
+	public ModelAndView view(UserVo userVo) {
+		HashMap<String, Object> map = userMapper.getUser(userVo);
+		log.info("map : {}",map);
+		
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("vo",map);
+		mv.setViewName("users/view");
+		
+		return mv;
+	}
+	// /UpdateForm
+	@RequestMapping("/UpdateForm")
+	public ModelAndView updateForm(UserVo userVo) {
+		HashMap<String, Object> map = userMapper.getUser(userVo);
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("vo", map);
+		
+		mv.setViewName("users/update");
+		return mv;
+		
+	}
+	@RequestMapping("/Update")
+	public ModelAndView update(UserVo userVo) {
 
+		log.info("userVo : {}",userVo);
+		
+		userMapper.updateUser(userVo);
+		
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("redirect:/Users/List");
+		return mv;
+	}
+	@RequestMapping("/DeleteForm")
+	public ModelAndView delete(UserVo userVo) {
+		
+		userMapper.deleteUser(userVo);
+		
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("redirect:/Users/List");
+		return mv;
+	}
 
 }
